@@ -16,6 +16,6 @@ def predict():
     category = predict_category(headline)
     return jsonify({ 'category': category })
 
-# Run the Flask app locally
-if __name__ == '__main__':
-    app.run(debug=True)
+# Cloud Function entry point (this will be used by Google Cloud Functions)
+def entry_point(request):
+    return app(request)
