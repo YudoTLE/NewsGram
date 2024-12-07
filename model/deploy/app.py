@@ -4,7 +4,7 @@ from prediction import predict_category
 # Create Flask app
 app = Flask(__name__)
 
-@app.route('/predict', methods=['POST'])
+@app.route('/predict-category', methods=['POST'])
 def predict():
     """Handle HTTP POST request to make predictions."""
     data = request.get_json()  # Get JSON data from request
@@ -17,5 +17,5 @@ def predict():
     return jsonify({ 'category': category })
 
 # Cloud Function entry point (this will be used by Google Cloud Functions)
-def entry_point(request):
-    return app(request)
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=8080)
