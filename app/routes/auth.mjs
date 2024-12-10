@@ -30,7 +30,7 @@ passport.use(new GoogleStrategy(
                 user = { id: newUserRef.id, ...newUser };
             } else {
                 const userDoc = usersQuery.docs[0];
-                user = { id: userDoc.id, ...doc.data() };
+                user = { id: userDoc.id, ...userDoc.data() };
             }
 
             return cb(null, user);
@@ -55,15 +55,11 @@ passport.deserializeUser((user, cb) => {
 
 const router = express.Router();
 
-router.get('/login', (req, res, next) => {
-    res.render('login');
-});
-
 router.get('/login/federated/google', passport.authenticate('google'));
 
 router.get('/oauth2/redirect/google', passport.authenticate('google', {
     successReturnToOrRedirect: '/',
-    failureRedirect: '/login'
+    failureRedirect: '/'
 }));
 
 router.post('/logout', (req, res, next) => {

@@ -3,22 +3,17 @@ import express from 'express';
 const router = express.Router();
 
 router.get('/', (req, res, next) => {
-    if (!req.user) {
-        return res.render('home');
-    }
+    if (!req.user)
+        return res.render('login');
+
     next();
 }, (req, res) => {
     res.locals.filter = null;
-    res.render('index', { user: req.user });
+    res.render('home', { user: req.user });
 });
 
-router.post('/', ensureLoggedIn(), (req, res, next) => {
-    req.body.title = req.body.title.trim();
-    next();
-}, (req, res) => {
-    if (req.body.title !== '')
-        return res.redirect('/' + (req.body.filter || ''));
-    return res.redirect('/' + (req.body.filter || ''));
+router.get('/login', (req, res, next) => {
+    res.render('login', { user: req.user });
 });
 
 export default router;
