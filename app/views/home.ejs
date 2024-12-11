@@ -64,24 +64,59 @@
             </div>
 
             <div class="middle">
-                <div class="feeds" id="feeds">
+                <!-- Home Section -->
+                <div id="home-section" class="section active">
+                    <h1>News for You</h1>
+                    <div class="news" id="news-home"></div>
+                </div>
+    
+                <!-- Explore Section -->
+                <div id="explore-section" class="section">
                     <h1>Explore News</h1>
-                    <div class="category">
-                        <div class="category-filter">
-                            <label for="categories">Choose a category:</label>
-                            <select id="categories">
-                                <option value="">All</option>
-                                <option value="business">Business</option>
-                                <option value="entertainment">Entertainment</option>
-                                <option value="health">Health</option>
-                                <option value="science">Science</option>
-                                <option value="sports">Sports</option>
-                                <option value="technology">Technology</option>
-                            </select>
+                    <div class="category-filter">
+                        <label for="categories">Choose a category:</label>
+                        <select id="categories">
+                            <option value="">All</option>
+                            <option value="business">Business</option>
+                            <option value="entertainment">Entertainment</option>
+                            <option value="health">Health</option>
+                            <option value="science">Science</option>
+                            <option value="sports">Sports</option>
+                            <option value="technology">Technology</option>
+                        </select>
+                    </div>
+                    <div class="news" id="news-explore"></div>
+                </div>
+    
+                <!-- Profile Section -->
+                <div id="profile-section" class="section">
+                    <h1>Account Settings</h1>
+                <div class="profile-setting">
+                    <div class="profile-photo-setting">
+                        <div class="pp-setting">
+                            <img src="./img/def-pp.jpg">
+                        </div>
+                        <div class="profile-photo-setting-btn">
+                            <button id="change-pp">Change Profile Picture</button>
+                            <button id="remove-pp">Remove Profile Picture</button>
                         </div>
                     </div>
-                    <div class="news" id="news-home"></div>
-                    <div class="news" id="news-explore"></div>
+                    <div class="actual-form">
+                        <label>Name</label>
+                        <div class="input-wrap">
+                            <input class="input-field" />
+                            <label>Email</label>
+                            <input class="input-field" />
+                            <label>Old Password</label>
+                            <input class="input-field" />
+                            <label>New Password</label>
+                            <input class="input-field" />
+                            <div class="save-change">
+                                <input type="submit" value="Save Change" class="save-btn" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 </div>
             </div>
         </div>
