@@ -181,7 +181,7 @@ async function fetchNewsForHome() {
     }
 
     try {
-        const response = await fetch(`http://localhost:3000/news?page=${page}`);
+        const response = await fetch(`http://localhost:3000/newsapi?page=${page}`);
         if (!response.ok) {
             throw new Error('Failed to fetch news');
         }
@@ -247,7 +247,7 @@ async function fetchNewsForExplore(category = '') {
     }
 
     try {
-        const response = await fetch(`http://localhost:3000/news?category=${category}&page=${pageExplore}`);
+        const response = await fetch(`http://localhost:3000/newsapi?category=${category}&page=${pageExplore}`);
         if (!response.ok) {
             throw new Error('Failed to fetch news');
         }

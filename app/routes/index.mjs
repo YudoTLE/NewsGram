@@ -81,7 +81,7 @@ router.post('/article', ensureLoggedIn(), async (req, res) => {
 router.get('/newsapi', async (req, res) => {
     try {
         const axios = require('axios');
-        const apiKey = 'MASUKIN NEWSAPI KEY DISINI';
+        const apiKey = '003d8be5d1024cb88182da3e1d821118';
         const response = await axios.get(`https://newsapi.org/v2/top-headlines?country=us&pageSize=20&apiKey=${ apiKey }`);
         const articles = response.data.articles;
 
