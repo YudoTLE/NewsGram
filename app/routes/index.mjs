@@ -80,14 +80,17 @@ router.post('/article', ensureLoggedIn(), async (req, res) => {
 
 router.get('/newsapi', async (req, res) => {
     try {
-        const axios = require('axios');
-        const apiKey = 'MASUKIN NEWSAPI KEY DISINI';
-        const response = await axios.get(`https://newsapi.org/v2/top-headlines?country=us&pageSize=20&apiKey=${ apiKey }`);
+        const { category, page = 1 } = req.query;
+        const url = `https://newsapi.org/v2/top-headlines?country=us${category ? `&category=${category}` : ''}&apiKey=${apiKey}`;
+
+        const response = await axios.get(url);
         const articles = response.data.articles;
 
-        const randomArticles = articles.sort(() => 0.5 - Math.random()).slice(0, 20);
-        res.json(randomArticles);
+        const shuffledArticles = articles.sort(() => Math.random() - 0.5);
+
+        res.json(shuffledArticles);
     } catch (error) {
+        console.error(error);
         res.status(500).send('Error fetching news');
     }
 });
