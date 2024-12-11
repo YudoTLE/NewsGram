@@ -33,7 +33,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(
     session({
-        secret: 'keyboard cat',
+        secret: process.env.SESSION_SECRET,
         resave: false, // Don't save session if unmodified
         saveUninitialized: false, // Don't create session until something is stored
     })

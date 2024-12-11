@@ -48,13 +48,13 @@ router.post('/article', ensureLoggedIn(), async (req, res) => {
         const userId = req.user.id;
         const articlesCollection = db.collection('articles');
 
-        const docRef = await articlesCollection.add({
+        const articleRef = await articlesCollection.add({
             authorId: userId,
             ...articleData,
             createdAt: new Date()
         });
 
-        res.status(201).json({ message: 'Article created', id: docRef.id });
+        res.status(201).json({ message: 'Article created', id: articleRef.id });
     } catch (error) {
         console.error('Error creating article: ', error);
         res.status(500).json({ error: 'Internal server error' });

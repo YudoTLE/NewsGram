@@ -4,7 +4,7 @@ const router = express.Router();
 
 router.get('/', (req, res, next) => {
     if (!req.user)
-        return res.render('login');
+        return res.render('auth');
 
     next();
 }, (req, res) => {
@@ -12,8 +12,8 @@ router.get('/', (req, res, next) => {
     res.render('home', { user: req.user });
 });
 
-router.get('/login', (req, res, next) => {
-    res.render('login', { user: req.user });
-});
+// router.get('/login', (req, res, next) => {
+//     res.render('login', { user: req.user });
+// });
 
 export default router;

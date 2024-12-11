@@ -12,8 +12,9 @@
       <div class="box">
         <div class="inner-box">
           <div class="forms-wrap">
-            <form action="index.html" autocomplete="off" class="sign-in-form">
-
+            <form action="/login" method="POST" autocomplete="off" class="sign-in-form">
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+              
               <div class="heading">
                 <h2>Welcome Back</h2>
                 <h6>Not registred yet?</h6>
@@ -24,17 +25,19 @@
                 <div class="input-wrap">
                   <input
                     type="text"
+                    name="identifier"
                     minlength="4"
                     class="input-field"
                     autocomplete="off"
                     required
                   />
-                  <label>Name</label>
+                  <label>Username/Email</label>
                 </div>
 
                 <div class="input-wrap">
                   <input
                     type="password"
+                    name="password"
                     minlength="4"
                     class="input-field"
                     autocomplete="off"
@@ -53,7 +56,8 @@
               </div>
             </form>
 
-            <form action="index.html" autocomplete="off" class="sign-up-form">
+            <form action="/signup" method="POST" autocomplete="off" class="sign-up-form">
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
 
               <div class="heading">
                 <h2>Get Started</h2>
@@ -65,6 +69,7 @@
                 <div class="input-wrap">
                   <input
                     type="text"
+                    name="name"
                     minlength="4"
                     class="input-field"
                     autocomplete="off"
@@ -75,17 +80,19 @@
 
                 <div class="input-wrap">
                   <input
-                    type="email"
+                    type="text"
+                    name="username"
                     class="input-field"
                     autocomplete="off"
                     required
                   />
-                  <label>Email</label>
+                  <label>Username</label>
                 </div>
 
                 <div class="input-wrap">
                   <input
                     type="password"
+                    name="password"
                     minlength="4"
                     class="input-field"
                     autocomplete="off"
