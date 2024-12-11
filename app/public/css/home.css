@@ -28,7 +28,9 @@
 
 }
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
     margin: 0;
     padding: 0;
     outline: 0;
@@ -47,8 +49,9 @@ body {
 
 /* =============== General Style ============== */
 .container {
-    width: 90%;
+    width: 91.6%;
     margin: 0 auto;
+    margin-bottom: 200px;
 }
 
 .profile-photo {
@@ -104,11 +107,10 @@ nav {
     z-index: 10;
 }
 
-nav .container {
+nav .nav-container {
     display: flex;
     align-items: center;
     justify-content: center;
-
 }
 
 /* =============== Main ============== */
@@ -142,6 +144,11 @@ main .container .left .profile {
 }
 
 /* =============== Sidebar ============== */
+.left .sidebar a:visited{
+    color: inherit;
+    text-decoration: none;
+}
+
 .left .sidebar {
     margin-top: 1rem;
     background: var(--color-white);
@@ -189,7 +196,7 @@ main .container .left .profile {
     background: var(--color-secondary-light);
 }
 
-.left .sidebar .active i, 
+.left .sidebar .active i,
 .left .sidebar .active h3 {
     color: var(--color-primary);
 }
@@ -219,57 +226,118 @@ main .container .left .profile {
     text-align: center;
     padding: 1rem 0;
     margin-bottom: 0.7rem;
-}  
+}   
 
-/* =============== Middle ============== */
+.feeds h1 {
+    font-size: 32px;
+}
 
-/* =============== Feeds ============== */
-
-.middle .feeds {
+.news {
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap; /* Adjust this if you want items to wrap */
-    gap: 1rem; /* Optional: Adds spacing between items */
+    flex-wrap: wrap;
+    gap: 1rem;
 }
 
-.middle .feeds .feed {
-    background: none;
+.news-card {
+    width: 350px;
+    margin-top: 1.3rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: var(--color-white);
+    border-radius: var(--card-border-radius);
     padding: var(--card-padding);
-    margin: 1rem 0;
-    font-size: 0.85rem;
-    line-height: 1.5;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
 }
 
-.middle .feeds .feed .info{
-    width: 18.5rem;
+.news-card:hover {
+    transform: scale(1.02);
 }
 
-.middle .feeds .feed a{
-    font-size: 1rem;
+.news-image {
+    width: 100%;
+    max-width: 100%;
+    /* Adjust to card width */
+    border-radius: 8px;
+    margin-bottom: 16px;
+    object-fit: cover;
+    display: block;
+}
+
+.news-card img {
+    width: 80%;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.news-title {
+    font-size: 18px;
     font-weight: bold;
+    margin: 10px 0;
+}
+
+.news-description {
+    font-size: 14px;
+    color: #555;
+}
+
+.news-time {
+    font-size: 12px;
+    color: #888;
+    margin-top: 10px;
+}
+
+.news-content a:visited {
+    color: inherit;
     text-decoration: none;
 }
 
-.middle .feeds .feed a:visited{
-    color: var(--color-dark);
-    font-size: 1rem;
-    font-weight: bold;
-    text-decoration: none;
-}
-
-.middle .feed .photo img{
-    width: 282px;
-    height: 193px;
-}
-
-.middle .feed .action-buttons {
+/* Container for the category filter */
+.category-filter {
+    width: inherit;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 1.4rem;
-    margin: 0.6rem 0;
+    padding: 10px;
+    background-color: var(--color-white);
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+/* Label styling */
+.category-filter label {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--color-dark);
+    margin-right: 15px;
+}
+
+/* Dropdown (select) styling */
+.category-filter select {
+    padding: 8px 15px;
+    font-size: 1rem;
+    border: 2px solid var(--color-grey);
+    border-radius: 5px;
+    background-color: var(--color-white);
+    color: var(--color-dark);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* Dropdown hover and focus states */
+.category-filter select:hover,
+.category-filter select:focus {
+    border-color: var(--color-primary);
+    outline: none;
+}
+
+/* Optional: Style the options inside the dropdown */
+.category-filter select option {
+    padding: 10px;
+    font-size: 1rem;
+}
 
 /* =============== Theme Customization ============== */
 .customize-theme {
@@ -290,7 +358,7 @@ main .container .left .profile {
     background: var(--color-white);
     padding: 3rem;
     border-radius: var(--card-border-radius);
-    width:50%;
+    width: 50%;
     box-shadow: 0 0 1rem var(--color-primary);
 }
 
@@ -299,7 +367,7 @@ main .container .left .profile {
     margin-top: 5rem;
 }
 
-.customize-theme .font-size > div {
+.customize-theme .font-size>div {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -386,7 +454,7 @@ main .container .left .profile {
     gap: 1.5rem;
 }
 
-.customize-theme .choose-bg > div {
+.customize-theme .choose-bg>div {
     padding: var(--card-padding);
     width: 100%;
     display: flex;
@@ -397,7 +465,7 @@ main .container .left .profile {
     cursor: pointer;
 }
 
-.customize-theme .choose-bg > div.active {
+.customize-theme .choose-bg>div.active {
     border: 2px solid var(--color-primary);
 }
 
@@ -416,7 +484,7 @@ main .container .left .profile {
     color: white;
 }
 
-.customize-theme .choose-bg > div span {
+.customize-theme .choose-bg>div span {
     width: 2rem;
     height: 2rem;
     border: 2px solid var(--color-grey);
@@ -439,12 +507,15 @@ MEDIA QUERIES FOR SMALL LAPTOP AND BIG TABLETS
     }
 
     .profile {
-        display: flex; /* Ensure proper layout for the profile */
-        margin-bottom: 1rem; /* Add spacing below the profile */
+        display: flex;
+        /* Ensure proper layout for the profile */
+        margin-bottom: 1rem;
+        /* Add spacing below the profile */
         background: var(--color-white);
         border-radius: var(--card-border-radius);
         padding: var(--card-padding);
-        justify-content: center; /* Center-align contents */
+        justify-content: center;
+        /* Center-align contents */
         align-items: center;
         flex-direction: column;
     }
@@ -468,6 +539,42 @@ MEDIA QUERIES FOR SMALL LAPTOP AND BIG TABLETS
 
     .handle {
         display: none;
+    }
+
+    .news-card {
+        width: 40%;
+    }
+
+    .middle {
+        width: 150%;
+    }
+
+    .feeds h1 {
+        text-align: center;
+    }
+
+    .category {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .news {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .category-filter {
+        width: 800px;
+        height: 80px;
+    }
+
+    .category-filter select {
+        width: 200px;
+        height: 60px;
     }
 }
 
@@ -493,7 +600,7 @@ MEDIA QUERIES FOR SMALL TABLETS AND MOBILE PHONES
     }
 
     /* Notification Popup */
-    .left .notifications-popup { 
+    .left .notifications-popup {
         position: absolute;
         left: -20rem;
         width: 20rem;
@@ -511,6 +618,31 @@ MEDIA QUERIES FOR SMALL TABLETS AND MOBILE PHONES
     }
 
     .customize-theme .card {
-        width: 80vw; 
+        width: 80vw;
+    }
+
+    .news-card {
+        width: 70%;
+    }
+
+    .feeds h1 {
+        text-align: center;
+    }
+
+    .news {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .category-filter {
+        width: 800px;
+        height: 100px;
+    }
+
+    .category-filter select {
+        width: 200px;
+        height: 60px;
     }
 }
