@@ -13,7 +13,6 @@ import pluralize from 'pluralize';
 
 import indexRouter from './routes/index.mjs';
 import authRouter from './routes/auth.mjs';
-import apiRouter from './routes/api.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -54,7 +53,6 @@ app.use((req, res, next) => { // This one also
 
 app.use('/', indexRouter);
 app.use('/', authRouter);
-app.use('/api', apiRouter);
 
 // Catch 404 and forward to error handler
 app.use((req, res, next) => {
