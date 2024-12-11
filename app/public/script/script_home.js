@@ -1,5 +1,36 @@
-// Sidebar
 const menuItems = document.querySelectorAll('.menu-item');
+const sections = document.querySelectorAll('.section');
+
+// Function to change the active section
+function showSection(sectionId) {
+    sections.forEach(section => {
+        if (section.id === sectionId) {
+            section.classList.add('active');
+        } else {
+            section.classList.remove('active');
+        }
+    });
+}
+
+// Add event listeners to menu items
+menuItems.forEach(item => {
+    item.addEventListener('click', () => {
+        const sectionId = item.id.replace('-menu', '-section');
+
+        if (item.id !== 'theme') {
+            showSection(sectionId); // Switch section if not theme
+
+            // Update active menu item styling
+            menuItems.forEach(menu => menu.classList.remove('active'));
+            item.classList.add('active');
+        } else {
+            // Open theme modal instead of switching section
+            openThemeModal();
+        }
+    });
+});
+
+
 
 // Theme
 const theme = document.querySelector('#theme');
@@ -83,7 +114,7 @@ const openThemeModal = () => {
 
 // Closes Modal
 const closeThemeModal = (e) => {
-    if(e.target.classList.contains('customize-theme')) {
+    if (e.target.classList.contains('customize-theme')) {
         themeModal.style.display = 'none';
     }
 }
@@ -100,20 +131,20 @@ const removeSizeSelectors = () => {
     });
 }
 
-fontSize.forEach(size => { 
-   size.addEventListener('click', () => {
+fontSize.forEach(size => {
+    size.addEventListener('click', () => {
         removeSizeSelectors();
         let fontSize;
 
-        if(size.classList.contains('font-size-1')) fontSize = '10px';
-        else if(size.classList.contains('font-size-2')) fontSize = '13px';
-        else if(size.classList.contains('font-size-3')) fontSize = '16px';
-        else if(size.classList.contains('font-size-4')) fontSize = '19px';
-        else if(size.classList.contains('font-size-5')) fontSize = '22px';
+        if (size.classList.contains('font-size-1')) fontSize = '10px';
+        else if (size.classList.contains('font-size-2')) fontSize = '13px';
+        else if (size.classList.contains('font-size-3')) fontSize = '16px';
+        else if (size.classList.contains('font-size-4')) fontSize = '19px';
+        else if (size.classList.contains('font-size-5')) fontSize = '22px';
 
         document.querySelector('html').style.fontSize = fontSize;
         localStorage.setItem('fontSize', fontSize); // Save to localStorage
-   });
+    });
 });
 
 // Theme Background Values
@@ -171,44 +202,36 @@ Bg3.addEventListener('click', () => {
 });
 
 // ========================== HOME PAGE: NEWS FETCHING ==========================
-document.addEventListener('DOMContentLoaded', () => {
-    const newsContainerHome = document.getElementById('news-home');
-    console.log(newsContainerHome);
-    let displayedArticlesHome = new Set(); // To track displayed articles' URLs
-    let page = 1;  // Page counter for home page
+const newsContainerHome = document.getElementById('news-home');
+let displayedArticlesHome = new Set(); // To track displayed articles' URLs
+let page = 1;  // Page counter for home page
 
-    console.log('memek');
+async function fetchNewsForHome() {
+    if (page === 1) {
+        newsContainerHome.innerHTML = '<p>Loading news...</p>';
+    }
 
-    async function fetchNewsForHome() {
+    try {
+        const response = await fetch(`http://localhost:3000/news?page=${page}`);
+        if (!response.ok) {
+            throw new Error('Failed to fetch news');
+        }
+
+        const articles = await response.json();
+
         if (page === 1) {
-            newsContainerHome.innerHTML = '<p>Loading news...</p>';
+            newsContainerHome.innerHTML = '';
         }
 
-        try {
+        const newArticles = articles
+            .filter(article => article.title && article.description && article.urlToImage && !displayedArticlesHome.has(article.url))
+            .map(article => {
+                displayedArticlesHome.add(article.url);
 
-            console.log('kontol')
-            // const response = await fetch(`http://localhost:3000/newsapi?page=${page}`);
-            const response = await fetch(`http://localhost:3000/api/articles`);
-            if (!response.ok) {
-                throw new Error('Failed to fetch news');
-            }
+                const publishedDate = new Date(article.publishedAt);
+                const formattedDate = `${publishedDate.toLocaleDateString()} ${publishedDate.toLocaleTimeString()}`;
 
-            const articles = await response.json();
-            console.log(articles);
-
-            if (page === 1) {
-                newsContainerHome.innerHTML = '';
-            }
-
-            const newArticles = articles
-                // .filter(article => article.title && article.description && article.urlToImage && !displayedArticlesHome.has(article.url))
-                .map(article => {
-                    displayedArticlesHome.add(article.url);
-
-                    const publishedDate = new Date(article.publishedAt);
-                    const formattedDate = `${publishedDate.toLocaleDateString()} ${publishedDate.toLocaleTimeString()}`;
-
-                    return `
+                return `
                         <article class="news-card">
                             <img src="${article.urlToImage}" alt="News Image" class="news-image" />
                             <div class="news-content">
@@ -219,93 +242,91 @@ document.addEventListener('DOMContentLoaded', () => {
                             </div>
                         </article>
                     `;
-                });
+            });
 
-            if (newArticles.length > 0) {
-                newsContainerHome.innerHTML += newArticles.join('');
-            } else {
-                newsContainerHome.innerHTML += '<p>No new articles available.</p>';
-            }
-        } catch (error) {
-            console.error(error);
-            newsContainerHome.innerHTML = '<p>Failed to load news. Please try again later.</p>';
+        if (newArticles.length > 0) {
+            newsContainerHome.innerHTML += newArticles.join('');
+        } else {
+            newsContainerHome.innerHTML += '<p>No new articles available.</p>';
         }
+    } catch (error) {
+        console.error(error);
+        newsContainerHome.innerHTML = '<p>Failed to load news. Please try again later.</p>';
+    }
+}
+
+function handleScroll() {
+    if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight) {
+        page++;
+        fetchNewsForHome();
+    }
+}
+
+window.addEventListener('scroll', handleScroll);
+
+fetchNewsForHome();
+
+// ========================== EXPLORE PAGE ==========================
+const newsContainerExplore = document.getElementById('news-explore');
+const categoriesDropdown = document.getElementById('categories');
+let pageExplore = 1;
+
+// Function to fetch news based on category and pagination
+async function fetchNewsForExplore(category = '') {
+    if (pageExplore === 1) {
+        newsContainerExplore.innerHTML = '<p>Loading news...</p>';
     }
 
-    // function handleScroll() {
-    //     if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight) {
-    //         page++;
-    //         fetchNewsForHome();
-    //     }
-    // }
+    try {
+        const response = await fetch(`http://localhost:3000/news?category=${category}&page=${pageExplore}`);
+        if (!response.ok) {
+            throw new Error('Failed to fetch news');
+        }
 
-    // window.addEventListener('scroll', handleScroll);
+        const articles = await response.json();
 
-    fetchNewsForHome();
-
-    // ========================== EXPLORE PAGE: NEWS FETCHING WITH CATEGORY FILTER ==========================
-    const newsContainerExplore = document.getElementById('news-explore');
-    const categoriesDropdown = document.getElementById('categories');
-    let pageExplore = 1;
-
-
-    async function fetchNewsForExplore(category = '') {
         if (pageExplore === 1) {
-            newsContainerExplore.innerHTML = '<p>Loading news...</p>';
+            newsContainerExplore.innerHTML = '';
         }
 
-        try {
-            const response = await fetch(`http://localhost:3000/newsapi?category=${category}&page=${pageExplore}`);
-            if (!response.ok) {
-                throw new Error('Failed to fetch news');
-            }
+        newsContainerExplore.innerHTML += articles
+            .filter(article => article.title && article.description && article.urlToImage)
+            .map(article => {
+                const publishedDate = new Date(article.publishedAt);
+                const formattedDate = `${publishedDate.toLocaleDateString()} ${publishedDate.toLocaleTimeString()}`;
 
-            const articles = await response.json();
-
-            if (pageExplore === 1) {
-                newsContainerExplore.innerHTML = '';
-            }
-
-            newsContainerExplore.innerHTML += articles
-                .filter(article => article.title && article.description && article.urlToImage)
-                .map(article => {
-                    const publishedDate = new Date(article.publishedAt);
-                    const formattedDate = `${publishedDate.toLocaleDateString()} ${publishedDate.toLocaleTimeString()}`;
-
-                    return `
-                        <article class="news-card">
-                            <img src="${article.urlToImage}" alt="News Image" class="news-image" />
-                            <div class="news-content">
-                                <h2>${article.title}</h2>
-                                <p class="news-description">${article.description}</p>
-                                <p class="news-date"><strong>Published:</strong> ${formattedDate}</p>
-                                <a href="${article.url}" target="_blank" class="news-link">Read more</a>
-                            </div>
-                        </article>
-                    `;
-                })
-                .join('');
-        } catch (error) {
-            console.error(error);
-            newsContainerExplore.innerHTML = '<p>Failed to load news. Please try again later.</p>';
-        }
+                return `
+                    <article class="news-card">
+                        <img src="${article.urlToImage}" alt="News Image" class="news-image" />
+                        <div class="news-content">
+                            <h2>${article.title}</h2>
+                            <p class="news-description">${article.description}</p>
+                            <p class="news-date"><strong>Published:</strong> ${formattedDate}</p>
+                            <a href="${article.url}" target="_blank" class="news-link">Read more</a>
+                        </div>
+                    </article>
+                `;
+            })
+            .join('');
+    } catch (error) {
+        console.error(error);
+        newsContainerExplore.innerHTML = '<p>Failed to load news. Please try again later.</p>';
     }
+}
 
-    function handleScrollExplore() {
-        if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight) {
-            pageExplore++;
-            const selectedCategory = categoriesDropdown.value;
-            fetchNewsForExplore(selectedCategory);
-        }
-    }
-
-    window.addEventListener('scroll', handleScrollExplore);
-
-    categoriesDropdown.addEventListener('change', () => {
+function handleScrollExplore() {
+    if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight) {
+        pageExplore++;
         const selectedCategory = categoriesDropdown.value;
-        pageExplore = 1;
         fetchNewsForExplore(selectedCategory);
-    });
+    }
+}
 
-    // fetchNewsForExplore();
+categoriesDropdown.addEventListener('change', () => {
+    pageExplore = 1;
+    fetchNewsForExplore(categoriesDropdown.value);
 });
+
+window.addEventListener('scroll', handleScrollExplore);
+
+fetchNewsForExplore();
