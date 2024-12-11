@@ -5,7 +5,6 @@ import passport from 'passport';
 import bcrypt from 'bcryptjs';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
-import { ensureLoggedIn } from 'connect-ensure-login';
 import db from '../db.mjs';
 
 passport.use(new LocalStrategy(
@@ -14,9 +13,6 @@ passport.use(new LocalStrategy(
         passwordField: 'password'
     },
     async (identifier, password, cb) => {
-        console.log(identifier);
-        console.log(password);
-        
         try {
             let user;
             if (!user) {
@@ -60,6 +56,7 @@ passport.use(new GoogleStrategy(
     },
     async (accessToken, refreshToken, profile, cb) => {
         try {
+            console.log(profile.photos);
             const email = profile.emails?.[0]?.value;
             if (!email)
                 return cb(new Error('Google account does not have an email address associated.'));
@@ -73,13 +70,18 @@ passport.use(new GoogleStrategy(
                 const newUser = {
                     name: profile.displayName,
                     email,
+                    photo: profile.photos[0].value,
                     createdAt: new Date()
                 };
                 const newUserRef = await db.collection('users').add(newUser);
                 user = { id: newUserRef.id, ...newUser };
             } else {
                 const userDoc = userRef.docs[0];
-                user = { id: userDoc.id, ...userDoc.data() };
+                user = {
+                    id: userDoc.id,
+                    photo: profile.photos[0].value,
+                    ...userDoc.data()
+                };
             }
 
             return cb(null, user);
@@ -92,7 +94,13 @@ passport.use(new GoogleStrategy(
 
 passport.serializeUser((user, cb) => {
     process.nextTick(() => {
-        cb(null, { id: user.id, name: user.name });
+        console.log(user);
+        cb(null, {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            photo: user.photo
+        });
     });
 });
 
