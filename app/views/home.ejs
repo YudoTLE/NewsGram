@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NewsGram</title>
+    <link rel="icon" type="image/webp" href="img/favicon.webp" />
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v2.1.6/css/unicons.css">
     <link rel="stylesheet" href="./css/home.css">
 </head>
@@ -26,13 +27,13 @@
                     <div class="profile-photo">
                         <img src="./img/def-pp.jpg">
                     </div>
-                    <div class="handle">
+                    <div class="handle">                        
                         <h4><%= user ? user.name : 'Anonymous' %></h4>
-                        <% if (user) { %>
-                            <a href='/logout'>Log Out</a>
-                        <% } else { %>
-                            <a href='/login/federated/google'>Sign In</a>
-                        <% } %>
+                        <form action="/logout" method="post">
+                            <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+
+                            <button type="submit">Logout</button>
+                        </form>
                     </div>
                 </a>
 

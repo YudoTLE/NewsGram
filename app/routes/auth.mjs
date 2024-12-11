@@ -150,8 +150,11 @@ router.post('/signup', async (req, res) => {
 
 router.post('/logout', (req, res, next) => {
     req.logout((error) => {
-        if (error)
+        if (error) {
+            console.error('Error during logout:', error);
             return next(error);
+        }
+
         res.redirect('/');
     });
 });
