@@ -126,6 +126,15 @@ main .container {
     position: relative;
 }
 
+.section {
+    display: none;
+}
+
+.section.active {
+    display: block;
+}
+
+
 /* =============== Left ============== */
 main .container .left {
     height: max-content;
@@ -679,16 +688,6 @@ MEDIA QUERIES FOR SMALL LAPTOP AND BIG TABLETS
         justify-content: center;
     }
 
-    .category-filter {
-        width: 800px;
-        height: 80px;
-    }
-
-    .category-filter select {
-        width: 200px;
-        height: 60px;
-    }
-
     .profile-setting {
         display: flex;
         flex-direction: column;
@@ -706,6 +705,19 @@ MEDIA QUERIES FOR SMALL LAPTOP AND BIG TABLETS
         flex-direction: column;
         margin-bottom: 0.7rem;
         width: 500px;
+    }
+
+    .category-filter {
+        width: 800px;
+        height: 80px;
+        display: flex;
+        justify-content: center;
+        margin: 0 auto;
+    }
+
+    .category-filter select {
+        width: 200px;
+        height: 60px;
     }
 }
 
@@ -764,16 +776,6 @@ MEDIA QUERIES FOR SMALL TABLETS AND MOBILE PHONES
         flex-direction: column;
         align-items: center;
         justify-content: center;
-    }
-
-    .category-filter {
-        width: 800px;
-        height: 100px;
-    }
-
-    .category-filter select {
-        width: 200px;
-        height: 60px;
     }
 
     .input-field {
