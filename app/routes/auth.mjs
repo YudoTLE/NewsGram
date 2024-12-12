@@ -56,7 +56,6 @@ passport.use(new GoogleStrategy(
     },
     async (accessToken, refreshToken, profile, cb) => {
         try {
-            console.log(profile.photos);
             const email = profile.emails?.[0]?.value;
             if (!email)
                 return cb(new Error('Google account does not have an email address associated.'));
