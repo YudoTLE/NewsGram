@@ -328,3 +328,71 @@ categoriesDropdown.addEventListener('change', () => {
 window.addEventListener('scroll', handleScrollExplore);
 
 // fetchNewsForExplore();
+
+// Your News
+const newsContainerYourNews = document.getElementById('your-news');
+let displayedArticlesYourNews = new Set();
+let pageYourNews = 1;
+
+async function fetchNewsForYourNews() {
+    if (pageYourNews === 1) {
+        newsContainerYourNews.innerHTML = '<p>Loading news...</p>';
+    }
+
+    try {
+        const response = await fetch(`http://localhost:3000/news?page=${pageYourNews}`);
+        if (!response.ok) {
+            throw new Error('Failed to fetch news');
+        }
+
+        const articles = await response.json();
+
+        if (pageYourNews === 1) {
+            newsContainerYourNews.innerHTML = '';
+        }
+
+        const newArticles = articles
+            .filter(article => article.title && article.description && article.urlToImage && !displayedArticlesYourNews.has(article.url))
+            .map(article => {
+                displayedArticlesYourNews.add(article.url);
+
+                const publishedDate = new Date(article.publishedAt);
+                const formattedDate = `${publishedDate.toLocaleDateString()} ${publishedDate.toLocaleTimeString()}`;
+
+                return `
+                        <article class="news-card">
+                            <img src="${article.urlToImage}" alt="News Image" class="news-image" />
+                            <div class="news-content">
+                                <h2>${article.title}</h2>
+                                <p class="news-description">${article.description}</p>
+                                <p class="news-date"><strong>Published:</strong> ${formattedDate}</p>
+                                <a href="${article.url}" target="_blank" class="news-link">Read more</a>
+                                <button id="trashcan-button" class="trashcan-button">
+                                    <img src="./img/trashcan.png" id="trashcan-image" class="trashcanimage" alt="Trashcan" />
+                                </button>
+                            </div>
+                        </article>
+                    `;
+            });
+
+        if (newArticles.length > 0) {
+            newsContainerYourNews.innerHTML += newArticles.join('');
+        } else {
+            newsContainerYourNews.innerHTML += '<p>No new articles available.</p>';
+        }
+    } catch (error) {
+        console.error(error);
+        newsContainerYourNews.innerHTML = '<p>Failed to load news. Please try again later.</p>';
+    }
+}
+
+function handleScrollYourNews() {
+    if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight) {
+        pageYourNews++;
+        fetchNewsForYourNews();
+    }
+}
+
+window.addEventListener('scroll', handleScrollYourNews);
+
+fetchNewsForYourNews();

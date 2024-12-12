@@ -1,3 +1,27 @@
-<p><%= message %></p>
-<p><%= error.status %></p>
-<p><%= error.stack %></p>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error Page</title>
+    <link rel="stylesheet" href="./css/error.css">
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="logo-container">
+            <img src="./img/logo_newsgram.png" alt="Newsgram Logo" class="logo">
+        </div>
+    </nav>
+    
+    <div class="error-container">
+        <h1>Oops! Something went wrong.</h1>
+        <p>We apologize for the inconvenience. Please try again later.</p>
+        <p>Message: <%= message %></p>
+        <p>Status: <%= error.status %></p>
+        <p>Stack: <%= error.stack %></p>
+    </div>
+</body>
+
+</html>
