@@ -436,6 +436,27 @@ button[id="trashcan-button"]:hover{
     cursor: pointer;
 }
 
+.verify-wrap {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+.verify-btn {
+    width: 10em;
+    padding: 5px 10px;
+    font-size: 14px;
+    background-color: lightgray; /* Adjust as needed */
+    color: black;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+}
+
+.verify-btn:hover {
+    opacity: 0.8;
+}
+
 /* Container for the category filter */
 .category-filter {
     width: inherit;
