@@ -70,7 +70,7 @@ def collect_headlines_from_category(category, count):
     return []
 
 while collected_count < 200:
-    category = top_categories[category_idx % 3][0]  # Cycle through top 3 categories
+    category = top_categories[category_idx % 3][0]  
     headlines_to_add = collect_headlines_from_category(category, category_cycle[category_idx % 4])
     
     if headlines_to_add:
@@ -79,11 +79,9 @@ while collected_count < 200:
 
     category_idx += 1  
 
-# Get headlines from other categories
 other_headlines = [headline for headline, category in test_data if category not in [top_categories[0][0], top_categories[1][0], top_categories[2][0]]]
 selected_headlines.extend(random.sample(other_headlines, 100))
 
-# Predict similarities and filter headlines with similarity > 0.4
 recommended_headlines = []
 
 for headline in selected_headlines:
@@ -91,7 +89,6 @@ for headline in selected_headlines:
     if similarity > 0.5:
         recommended_headlines.append((headline, similarity))
 
-# Save the recommended headlines to a new file
 with open('recommendation.tsv', 'w', encoding='utf-8') as file:
     for headline, similarity in recommended_headlines:
         file.write(f"{headline}\t{similarity:.4f}\n")
