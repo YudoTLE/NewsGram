@@ -5,7 +5,7 @@ import passport from 'passport';
 import bcrypt from 'bcryptjs';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
-import db from '../db.mjs';
+import firestoreDB from '../db/firestore-db.mjs';
 
 passport.use(new LocalStrategy(
     {
@@ -16,7 +16,7 @@ passport.use(new LocalStrategy(
         try {
             let user;
             if (!user) {
-                const userRef = await db.collection('users')
+                const userRef = await firestoreDB.collection('users')
                     .where('email', '==', identifier)
                     .get();
                 
@@ -24,7 +24,7 @@ passport.use(new LocalStrategy(
                     user = userRef.docs[0].data();
             }
             if (!user) {
-                const userRef = await db.collection('users')
+                const userRef = await firestoreDB.collection('users')
                     .where('username', '==', identifier)
                     .get();
 
@@ -61,7 +61,7 @@ passport.use(new GoogleStrategy(
             if (!email)
                 return cb(new Error('Google account does not have an email address associated.'));
 
-            const userRef = await db.collection('users')
+            const userRef = await firestoreDB.collection('users')
                 .where('email', '==', email)
                 .get();
 
@@ -73,7 +73,7 @@ passport.use(new GoogleStrategy(
                     photo: profile.photos[0].value,
                     createdAt: new Date()
                 };
-                const newUserRef = await db.collection('users').add(newUser);
+                const newUserRef = await firestoreDB.collection('users').add(newUser);
                 user = { id: newUserRef.id, ...newUser };
             } else {
                 const userDoc = userRef.docs[0];
@@ -94,7 +94,6 @@ passport.use(new GoogleStrategy(
 
 passport.serializeUser((user, cb) => {
     process.nextTick(() => {
-        console.log(user);
         cb(null, {
             id: user.id,
             name: user.name,
@@ -128,7 +127,7 @@ router.post('/signup', async (req, res) => {
     try {
         const { name, username, password } = req.body;
 
-        const existingUserRef = await db.collection('users')
+        const existingUserRef = await firestoreDB.collection('users')
             .where('username', '==', username)
             .get();
         
@@ -141,7 +140,7 @@ router.post('/signup', async (req, res) => {
             username,
             password: hashedPassword
         };
-        const newUserRef = await db.collection('users').add(newUser);
+        const newUserRef = await firestoreDB.collection('users').add(newUser);
         newUser.id = newUserRef.id;
 
         req.login(newUser, (error) => {

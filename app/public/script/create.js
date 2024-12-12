@@ -6,7 +6,7 @@ dropZone.addEventListener('click', () => {
   fileInput.click();
 });
 
-fileInput.addEventListener('change', handleFiles);
+fileInput.addEventListener('change', (e) => handleFiles(e.target.files));
 
 dropZone.addEventListener('dragover', (e) => {
   e.preventDefault();
@@ -20,8 +20,7 @@ dropZone.addEventListener('dragleave', () => {
 dropZone.addEventListener('drop', (e) => {
   e.preventDefault();
   dropZone.classList.remove('dragover');
-  const files = e.dataTransfer.files;
-  handleFiles(files);
+  handleFiles(e.dataTransfer.files);
 });
 
 function handleFiles(files) {

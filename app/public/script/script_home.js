@@ -15,11 +15,10 @@ function showSection(sectionId) {
 // Add event listeners to menu items
 menuItems.forEach(item => {
     item.addEventListener('click', () => {
-        const sectionId = item.id.replace('-menu', '-section');
-
+        const sectionId = item.id + '-section';
         if (item.id !== 'theme') {
             showSection(sectionId); // Switch section if not theme
-
+            
             // Update active menu item styling
             menuItems.forEach(menu => menu.classList.remove('active'));
             item.classList.add('active');
@@ -71,7 +70,6 @@ menuItems.forEach(item => {
 // Retrieve the active state from sessionStorage on page load
 window.addEventListener('DOMContentLoaded', () => {
     const activeMenu = sessionStorage.getItem('activeMenu');
-
     if (activeMenu) {
         changeActiveItem(); // Clear all active states
         const activeItem = document.getElementById(activeMenu);
@@ -264,7 +262,7 @@ function handleScroll() {
 
 window.addEventListener('scroll', handleScroll);
 
-fetchNewsForHome();
+// fetchNewsForHome();
 
 // ========================== EXPLORE PAGE ==========================
 const newsContainerExplore = document.getElementById('news-explore');
@@ -329,4 +327,4 @@ categoriesDropdown.addEventListener('change', () => {
 
 window.addEventListener('scroll', handleScrollExplore);
 
-fetchNewsForExplore();
+// fetchNewsForExplore();

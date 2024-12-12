@@ -21,12 +21,12 @@
     <main>
         <div class="container">
             <div class="create-post">
-                <h1 id="create-post-h1">Create News</h1>
-                <form action="/submit-news" method="POST" enctype="multipart/form-data" class="create-post-form">
+                <h1 id="create-post-h1">Post Article</h1>
+                <form action="/api/article?_csrf=<%= csrfToken %>" method="POST" enctype="multipart/form-data" class="create-post-form">
                     <div class="upload-container">
-                        <input type="file" id="fileInput" name="newsImage" hidden multiple>
+                        <input type="file" id="fileInput" name="article-img" hidden />
                         <div id="dropZone" class="drop-zone">
-                            <p>Drag & drop News Image here or click to upload</p>
+                            <p>Drag & drop article's image here or click to upload</p>
                         </div>
                         <div id="fileList"></div>
                     </div>
@@ -38,17 +38,16 @@
                         <textarea id="content" name="content" placeholder="Enter content" required></textarea>
                     </div>
                     <div class="button-group">
-                        <a href="home.html" class="btn btn-cancel">Cancel</a>
+                        <a href="/" class="btn btn-cancel">Cancel</a>
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </div>
                 </form>
             </div>
         </div>
-        
     </main>
 
     <script src="script/create.js"></script>
-    <script src="script/script.js"></script>
+    <script src="script/script_home.js"></script>
 </body>
 
 </html>

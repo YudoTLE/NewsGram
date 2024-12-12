@@ -1,5 +1,5 @@
 import express from 'express';
-import db from '../db.mjs';
+import firestoreDB from '../db/firestore-db.mjs';
 import { redirectUnauthenticated } from '../middleware/auth.mjs';
 
 const router = express.Router();
@@ -13,6 +13,11 @@ router.get('/', redirectUnauthenticated, (req, res) => {
     res.render('home', { user: req.user });
 });
 
+router.get('/post-article', redirectUnauthenticated, (req, res) => {
+    res.locals.filter = null;
+    res.render('post-article', { user: req.user });
+});
+
 router.get('/profile', redirectUnauthenticated, (req, res) => {
     res.locals.filter = null;
     res.render('profile', { user: req.user });
@@ -23,7 +28,7 @@ router.get('/article/:id', redirectUnauthenticated, async (req, res) => {
         const { id } = req.params;
         const user = req.user;
 
-        const userRef = db.collection('users').doc(user.id);
+        const userRef = firestoreDB.collection('users').doc(user.id);
         const userDoc = await userRef.get();
 
         let visitedArticlesId = userDoc.data().visitedArticlesId || [];
@@ -34,7 +39,7 @@ router.get('/article/:id', redirectUnauthenticated, async (req, res) => {
             visitedArticlesId
         });
 
-        const articleDoc = await db.collection('articles').doc(id).get();
+        const articleDoc = await firestoreDB.collection('articles').doc(id).get();
         if (!articleDoc.exists)
             return res.status(404).json({ message: 'Article not found' });
 
