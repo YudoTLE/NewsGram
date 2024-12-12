@@ -236,7 +236,7 @@ async function fetchNewsForHome() {
                                 <h2>${article.title}</h2>
                                 <p class="news-description">${article.content}</p>
                                 <p class="news-date"><strong>Published:</strong> ${formattedDate}</p>
-                                <a href="${article.id}" target="_blank" class="news-link">Read more</a>
+                                <a href="/article/${article.id}" class="news-link">Read more</a>
                             </div>
                         </article>
                     `;
@@ -300,7 +300,7 @@ async function fetchNewsForExplore(category = '') {
                             <h2>${article.title}</h2>
                             <p class="news-description">${article.content}</p>
                             <p class="news-date"><strong>Published:</strong> ${formattedDate}</p>
-                            <a href="${article.id}" target="_blank" class="news-link">Read more</a>
+                            <a href="/article/${article.id}" class="news-link">Read more</a>
                         </div>
                     </article>
                 `;
@@ -366,7 +366,7 @@ async function fetchNewsForYourNews() {
                                 <h2>${article.title}</h2>
                                 <p class="news-description">${article.description}</p>
                                 <p class="news-date"><strong>Published:</strong> ${formattedDate}</p>
-                                <a href="${article.url}" target="_blank" class="news-link">Read more</a>
+                                <a href="/article/${article.id}" class="news-link">Read more</a>
                                 <button id="trashcan-button" class="trashcan-button">
                                     <img src="./img/trashcan.png" id="trashcan-image" class="trashcanimage" alt="Trashcan" />
                                 </button>

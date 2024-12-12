@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>NewsGram</title>
+    <link rel="stylesheet" href="../css/article.css">
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="logo-container">
+            <img src="../img/logo_newsgram.png" alt="Newsgram Logo" class="logo">
+        </div>
+    </nav>
+
+    <main class="article-container">
+        <div class="article" id="article">
+            <article class="news-card">
+                <button class="home-btn" onclick="location.href='/'">Back</button>
+                <h1 class="news-title"><%= article.title %></h1>
+                <img src="<%= article.imgUrl %>" alt="News Image" class="news-image" />
+                <div class="news-content">
+                    <p class="news-date"><strong>Published:</strong><%= article.date %></p>
+                    <p class="news-content-text">
+                        <%= article.content %>
+                    </p>
+                </div>
+            </article>
+        </div>
+    </main>
+
+    <script src="script/script.js"></script>
+</body>
+
+</html>

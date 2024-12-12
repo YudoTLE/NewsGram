@@ -4,7 +4,6 @@ import express from 'express';
 import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
-import { authenticateLocal, authenticateGoogle, createUser } from '../services/auth.mjs';
 import { localStrategy, googleStrategy, signup, logout } from '../controllers/auth.mjs';
 
 passport.use(new LocalStrategy(
