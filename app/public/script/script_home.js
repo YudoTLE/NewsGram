@@ -210,7 +210,8 @@ async function fetchNewsForHome() {
     }
 
     try {
-        const response = await fetch(`http://localhost:3000/news?page=${page}`);
+        const response = await fetch(`http://localhost:3000/api/articles`);
+        // const response = await fetch(`http://localhost:3000/news?page=${page}`);
         if (!response.ok) {
             throw new Error('Failed to fetch news');
         }
@@ -222,21 +223,20 @@ async function fetchNewsForHome() {
         }
 
         const newArticles = articles
-            .filter(article => article.title && article.description && article.urlToImage && !displayedArticlesHome.has(article.url))
             .map(article => {
                 displayedArticlesHome.add(article.url);
 
-                const publishedDate = new Date(article.publishedAt);
+                const publishedDate = new Date(article.createdAt);
                 const formattedDate = `${publishedDate.toLocaleDateString()} ${publishedDate.toLocaleTimeString()}`;
 
                 return `
                         <article class="news-card">
-                            <img src="${article.urlToImage}" alt="News Image" class="news-image" />
+                            <img src="${article.imgUrl}" alt="News Image" class="news-image" />
                             <div class="news-content">
                                 <h2>${article.title}</h2>
-                                <p class="news-description">${article.description}</p>
+                                <p class="news-description">${article.content}</p>
                                 <p class="news-date"><strong>Published:</strong> ${formattedDate}</p>
-                                <a href="${article.url}" target="_blank" class="news-link">Read more</a>
+                                <a href="${article.id}" target="_blank" class="news-link">Read more</a>
                             </div>
                         </article>
                     `;
@@ -262,7 +262,7 @@ function handleScroll() {
 
 window.addEventListener('scroll', handleScroll);
 
-// fetchNewsForHome();
+fetchNewsForHome();
 
 // ========================== EXPLORE PAGE ==========================
 const newsContainerExplore = document.getElementById('news-explore');
@@ -276,7 +276,8 @@ async function fetchNewsForExplore(category = '') {
     }
 
     try {
-        const response = await fetch(`http://localhost:3000/news?category=${category}&page=${pageExplore}`);
+        // const response = await fetch(`http://localhost:3000/news?category=${category}&page=${pageExplore}`);
+        const response = await fetch(`http://localhost:3000/api/articles?category=${category}`);
         if (!response.ok) {
             throw new Error('Failed to fetch news');
         }
@@ -288,19 +289,18 @@ async function fetchNewsForExplore(category = '') {
         }
 
         newsContainerExplore.innerHTML += articles
-            .filter(article => article.title && article.description && article.urlToImage)
             .map(article => {
-                const publishedDate = new Date(article.publishedAt);
+                const publishedDate = new Date(article.createdAt);
                 const formattedDate = `${publishedDate.toLocaleDateString()} ${publishedDate.toLocaleTimeString()}`;
 
                 return `
                     <article class="news-card">
-                        <img src="${article.urlToImage}" alt="News Image" class="news-image" />
+                        <img src="${article.imgUrl}" alt="News Image" class="news-image" />
                         <div class="news-content">
                             <h2>${article.title}</h2>
-                            <p class="news-description">${article.description}</p>
+                            <p class="news-description">${article.content}</p>
                             <p class="news-date"><strong>Published:</strong> ${formattedDate}</p>
-                            <a href="${article.url}" target="_blank" class="news-link">Read more</a>
+                            <a href="${article.id}" target="_blank" class="news-link">Read more</a>
                         </div>
                     </article>
                 `;
