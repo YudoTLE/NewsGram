@@ -333,11 +333,6 @@ main .container .left .profile {
     margin-left: 250px; /* Adjust if needed */
 }
 
-.trashcan-image {
-    width: 30px;
-    height: 30px;
-}
-
 .news-card:hover .trashcan-button {
     display: block;
 }
