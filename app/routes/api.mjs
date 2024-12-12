@@ -7,9 +7,20 @@ import { upload } from '../middleware/multer.mjs';
 
 const router = express.Router();
 
-router.get('/articles', async (req, res, next) => {
+router.get('/articles', async (req, res) => {
     try {
-        const articlesQuery = await firestoreDB.collection('articles').get();
+        const { category, limit='100' } = req.query;
+        
+        let articlesQuery = firestoreDB.collection('articles');
+        if (category) {
+            articlesQuery = articlesQuery
+                .where('category', '==', category);
+        }
+        if (limit) {
+            articlesQuery = articlesQuery
+                .limit(parseInt(limit, 10));
+        }
+        articlesQuery = await articlesQuery.get();
 
         const articles = articlesQuery.docs.map(doc => ({
             id: doc.id,
