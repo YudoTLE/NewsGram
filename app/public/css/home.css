@@ -323,6 +323,29 @@ main .container .left .profile {
     text-decoration: none;
 }
 
+.trashcan-button {
+    display: none;
+    border: none;
+    background-color: #EE5253;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 5px;
+    margin-left: 250px; /* Adjust if needed */
+}
+
+.trashcan-image {
+    width: 30px;
+    height: 30px;
+}
+
+.news-card:hover .trashcan-button {
+    display: block;
+}
+
+button[id="trashcan-button"]:hover{
+    opacity: 0.8;
+}
+
 /* SETTINGS */
 
 .profile-photo-setting {
