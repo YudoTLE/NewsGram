@@ -4,7 +4,7 @@ import express from 'express';
 import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
-import { localStrategy, googleStrategy, signup, logout } from '../controllers/auth.mjs';
+import { localStrategy, googleStrategy, signup, logout, updateProfile } from '../controllers/auth.mjs';
 
 passport.use(new LocalStrategy(
     {
@@ -30,6 +30,7 @@ passport.serializeUser((user, cb) => {
         cb(null, {
             id: user.id,
             name: user.name,
+            username: user.username,
             email: user.email,
             photo: user.photo
         });
@@ -59,5 +60,7 @@ router.post('/login', passport.authenticate('local', {
 router.post('/signup', signup);
 
 router.post('/logout', logout);
+
+router.post('/update-profile', updateProfile);
 
 export default router;

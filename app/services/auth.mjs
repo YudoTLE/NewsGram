@@ -1,6 +1,17 @@
 import bcrypt from 'bcryptjs';
 import firestoreDB from '../db/firestore-db.mjs';
 
+
+export const findUserByID = async (id) => {
+    if (!id) return undefined;
+
+    const userRef = await firestoreDB.collection('users').doc(id).get();
+    if (!userRef.exists)
+        return undefined;
+
+    return { id: userRef.id, ...userRef.data() };
+};
+
 export const findUserByIdentifier = async (identifier) => {
     if (!identifier) return undefined;
 
@@ -66,6 +77,43 @@ export const createUser = async (userData) => {
     newUser.id = newUserRef.id;
 
     return newUser;
+};
+
+export const updateUser = async (id, newUserData) => {
+    const { name, username, password, email } = newUserData;
+
+    const userRef = await firestoreDB.collection('users').doc(id).get();
+    if (!userRef.exists)
+        return { error: 'User not found.' };
+
+    const updatedData = {};
+    if (name)
+        updatedData.name = name;
+    if (username) {
+        const existingUser = await findUserByUsername(username);
+        if (existingUser && existingUser.id !== id)
+            return { error: 'Username already in use.' };
+
+        updatedData.username = username;
+    }
+    if (password)
+        updatedData.password = await bcrypt.hash(password, 10);
+    if (email) {
+        const existingUserByEmail = await findUserByEmail(email);
+        if (existingUserByEmail && existingUserByEmail.id !== id)
+            return { error: 'Email already in use.' };
+
+        updatedData.email = email;
+    }
+
+    if (Object.keys(updatedData).length === 0)
+        return { id, ...userRef.data() };
+
+    await firestoreDB.collection('users').doc(id).update(updatedData);
+
+    const updatedUserRef = await firestoreDB.collection('users').doc(id).get();
+
+    return { id, ...updatedUserRef.data() };
 };
 
 export const authenticateLocal = async (identifier, password) => {

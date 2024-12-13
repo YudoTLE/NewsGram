@@ -51,24 +51,28 @@ const changeActiveItem = () => {
 }
 
 // Add event listener to menu items
+const updateMenuItem = (item) => {
+    // Check if the clicked menu item is not the theme
+    if (item.id !== 'theme') {
+        // Remove active class from all menu items
+        changeActiveItem();
+
+        // Add active class to the clicked item
+        item.classList.add('active');
+
+        // Save the active item's ID to sessionStorage
+        sessionStorage.setItem('activeMenu', item.id);
+    }
+};
+
 menuItems.forEach(item => {
-    item.addEventListener('click', () => {
-        // Check if the clicked menu item is not the theme
-        if (item.id !== 'theme') {
-            // Remove active class from all menu items
-            changeActiveItem();
-
-            // Add active class to the clicked item
-            item.classList.add('active');
-
-            // Save the active item's ID to sessionStorage
-            sessionStorage.setItem('activeMenu', item.id);
-        }
-    });
+    updateMenuItem(item);
+    item.addEventListener('click', updateMenuItem);
 });
 
 // Retrieve the active state from sessionStorage on page load
 window.addEventListener('DOMContentLoaded', () => {
+
     const activeMenu = sessionStorage.getItem('activeMenu');
     if (activeMenu) {
         changeActiveItem(); // Clear all active states

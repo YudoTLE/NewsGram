@@ -97,22 +97,30 @@
                 <div id="profile-section" class="section">
                     <h1>Account Settings</h1>
                     <div class="profile-setting">
-                        <div class="actual-form">
-                            <label>Name</label>
+                        <form action="/update-profile" method="POST" class="actual-form">
+                            <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+
                             <div class="input-wrap">
-                                <input class="input-field" />
+                                <label>Name</label>
+                                <input class="input-field" name="newName" value="<%= user.name %>" />
+                                
+                                <label>Username</label>
+                                <input class="input-field" name="newUsername" value="<%= user.username %>" />
 
                                 <label>Email</label>
-                                <input class="input-field" />
-
+                                <input class="input-field" name="newEmail" value="<%= user.email %>"" />
+                                
+                                <label>Verification Code</label>
                                 <div class="verify-wrap">
-                                    <label>Old Password</label>
+                                    <input class="input-field" name="verificationCode" />
                                     <button type="button" class="verify-btn">Verify</button>
                                 </div>
-                                <input class="input-field" />
+
+                                <label>Old Password</label>
+                                <input class="input-field" name="oldPassword" type="password" />
 
                                 <label>New Password</label>
-                                <input class="input-field" />
+                                <input class="input-field" name="newPassword" type="password" />
 
                                 <div class="save-change">
                                     <input type="submit" value="Save Change" class="save-btn" />
