@@ -225,17 +225,13 @@ async function fetchNewsForHome() {
         const newArticles = articles
             .map(article => {
                 displayedArticlesHome.add(article.url);
-
-                const publishedDate = new Date(article.createdAt);
-                const formattedDate = `${publishedDate.toLocaleDateString()} ${publishedDate.toLocaleTimeString()}`;
-
                 return `
                         <article class="news-card">
                             <img src="${article.imgUrl}" alt="News Image" class="news-image" />
                             <div class="news-content">
                                 <h2>${article.title}</h2>
                                 <p class="news-description">${article.content}</p>
-                                <p class="news-date"><strong>Published:</strong> ${formattedDate}</p>
+                                <p class="news-date"><strong>${article.category}</strong></p>
                                 <a href="/article/${article.id}" class="news-link">Read more</a>
                             </div>
                         </article>
@@ -290,16 +286,13 @@ async function fetchNewsForExplore(category = '') {
 
         newsContainerExplore.innerHTML += articles
             .map(article => {
-                const publishedDate = new Date(article.createdAt);
-                const formattedDate = `${publishedDate.toLocaleDateString()} ${publishedDate.toLocaleTimeString()}`;
-
                 return `
                     <article class="news-card">
                         <img src="${article.imgUrl}" alt="News Image" class="news-image" />
                         <div class="news-content">
                             <h2>${article.title}</h2>
                             <p class="news-description">${article.content}</p>
-                            <p class="news-date"><strong>Published:</strong> ${formattedDate}</p>
+                            <p class="news-date"><strong>${article.category}</strong></p>
                             <a href="/article/${article.id}" class="news-link">Read more</a>
                         </div>
                     </article>
@@ -327,7 +320,7 @@ categoriesDropdown.addEventListener('change', () => {
 
 window.addEventListener('scroll', handleScrollExplore);
 
-// fetchNewsForExplore();
+fetchNewsForExplore();
 
 // Your News
 const newsContainerYourNews = document.getElementById('your-news');

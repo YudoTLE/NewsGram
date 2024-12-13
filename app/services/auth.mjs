@@ -20,7 +20,10 @@ export const findUserByUsername = async (username) => {
         .where('username', '==', username)
         .get();
     if (!userRef.empty)
-        return userRef.docs[0].data();
+    {
+        const userDoc = userRef.docs[0];
+        return { id: userDoc.id, ...userDoc.data() };
+    }
 
     return undefined;
 };
@@ -33,7 +36,10 @@ export const findUserByEmail = async (email) => {
         .where('email', '==', email)
         .get();
     if (!userRef.empty)
-        return userRef.docs[0].data();
+    {
+        const userDoc = userRef.docs[0];
+        return { id: userDoc.id, ...userDoc.data() };
+    }
     
     return undefined;
 };

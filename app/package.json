@@ -4,7 +4,8 @@
   "main": "app.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon bin/www.mjs"
+    "dev": "nodemon bin/www.mjs",
+    "prod": "node bin/www.mjs"
   },
   "author": "",
   "license": "ISC",

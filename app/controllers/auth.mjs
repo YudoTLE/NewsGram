@@ -19,6 +19,8 @@ export const googleStrategy = async (accessToken, refreshToken, profile, cb) => 
         if (user.error)
             return cb(new Error(user.error));
 
+        console.log(user);
+
         return cb(null, user);
     } catch (error) {
         console.log('Error during authentication:', error);
