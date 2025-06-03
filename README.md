@@ -1,1 +1,3 @@
 # NewsGram
+
+Bangkit Capstone Project
