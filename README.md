@@ -1,3 +1,3 @@
 # NewsGram
 
-Bangkit Capstone Project
+News Headline classification with the implementation of Natural Language Processing (NLP)
